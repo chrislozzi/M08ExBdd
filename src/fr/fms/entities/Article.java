@@ -16,10 +16,11 @@ public class Article {
 	 * @param unitaryPrice
 	 */
 	public Article(int idArticle, String description, String brand, double unitaryPrice) {
-		this.idArticle = idArticle;
-		this.description = description;
-		this.brand = brand;
-		this.unitaryPrice = unitaryPrice;
+		setIdArticle(idArticle);
+		setDecsription(description);
+		setBrand(brand);
+		setUnitaryPrice(unitaryPrice);
+
 	}
 	/**
 	 * @param idArticle
@@ -27,9 +28,9 @@ public class Article {
 	 * @param brand
 	 */
 	public Article(String description, String brand, double unitaryPrice) {
-		this.description = description;
-		this.brand = brand;
-		this.unitaryPrice = unitaryPrice;
+		setDecsription(description);
+		setBrand(brand);
+		setUnitaryPrice(unitaryPrice);
 	}
 	/**
 	 * @return the idArticle
@@ -44,15 +45,15 @@ public class Article {
 		this.idArticle = idArticle;
 	}
 	/**
-	 * @return the desription
+	 * @return the description
 	 */
 	public String getDescription() {
 		return description;
 	}
 	/**
-	 * @param desription the desription to set
+	 * @param desription the description to set
 	 */
-	public void setDecsription(String desription) {
+	public void setDecsription(String description) {
 		this.description = description;
 	}
 	/**
@@ -76,7 +77,7 @@ public class Article {
 	/**
 	 * @param unitaryPrice the unitaryPrice to set
 	 */
-	public void setUnitaryPrice(Float unitaryPrice) {
+	public void setUnitaryPrice(double unitaryPrice) {
 		this.unitaryPrice = unitaryPrice;
 	}
 	@Override
@@ -84,8 +85,8 @@ public class Article {
 		return "Article [idArticle=" + idArticle + ", description=" + description + ", brand=" + brand + ", unitaryPrice="
 				+ unitaryPrice + "]";
 	}
-	
-	
 
-	
+
+
+
 }

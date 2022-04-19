@@ -14,25 +14,21 @@ import java.util.Properties;
  *
  */
 public class BddConnection {
-	private static final BddConnection INSTANCE = new BddConnection();
-
-	private  BddConnection() {				
-	};
-
-	public static BddConnection getInstance() {
-		return INSTANCE;
-	}
-
-	public  Connection getConnection() {		
-		Connection connection = null;
-		CreateConfigFile confProperties = new CreateConfigFile();
-
+	private static final CreateConfigFile confProperties = new CreateConfigFile();
+	private static final BddConnection INSTANCE = new BddConnection(confProperties);
+	
+	private   Connection connection = null;
+	 
+	private  BddConnection(CreateConfigFile confProperties) {	
+		Properties readPropFile = null;
 		try {
-			confProperties.Create();		
-			Properties p = null;		
-			p = CreateConfigFile.readPropertiesFile("conf.properties");		
-			Class.forName(p.getProperty("db.driver.class")); //enregistre la class auprès du driver manager
-			connection = DriverManager.getConnection(p.getProperty("db.url"),p.getProperty("db.login"), p.getProperty("db.password"));
+			//confProperties.Create();		
+				
+			readPropFile = CreateConfigFile.readPropertiesFile("conf.properties");		
+			Class.forName(readPropFile.getProperty("db.driver.class")); 
+			connection = DriverManager.getConnection(readPropFile.getProperty("db.url"),
+													readPropFile.getProperty("db.login"), 
+													readPropFile.getProperty("db.password"));
 
 		} catch(ClassNotFoundException e) {
 			e.printStackTrace();
@@ -44,9 +40,13 @@ public class BddConnection {
 		} catch(SQLException e2) {
 			e2.printStackTrace();
 		}
-
-		return connection;
-
 	}
+
+	public static Connection getConnection() {
+		
+		return INSTANCE.connection;
+	}
+
+	
 
 }

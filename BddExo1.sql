@@ -50,7 +50,7 @@ select disctint Description from t_articles;
 ----------------------------------------------------------------------------------
 -----Affiche le Prix moyen des articles de chaque marque lorqu'il est est inférieur à 600  
 ----------------------------------------------------------------------------------
-select Brand, avg(UnitaryPrice) from t_articles group by Brand HAVING avg(UnitaryPrice)<=150;
+select Brand, avg(UnitaryPrice) from t_articles group by Brand HAVING avg(UnitaryPrice)<=600;
 -----------------------Question 1.12----------------------------------------------
 -----Ajouter la table des catégories é votre base de données et insérez-en -------
 ----------------------------------------------------------------------------------

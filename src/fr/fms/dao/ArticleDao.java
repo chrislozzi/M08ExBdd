@@ -27,7 +27,7 @@ public class ArticleDao implements Dao<Article>{
 	}
 
 	@Override
-	public void create(Article obj) {		
+	public void create(Article obj) throws SQLException {		
 		try(PreparedStatement ps = connection.prepareStatement(CREATE)){	
 			ps.setString(1, obj.getDescription());
 			ps.setString(2, obj.getBrand());
@@ -36,33 +36,32 @@ public class ArticleDao implements Dao<Article>{
 
 		}
 		catch(SQLException e) {
-			e.printStackTrace();
+			throw new SQLException("Echec de création de l'article");
 		}
 	}
 
 	@Override
-	public Article read(int id) {
+	public Article read(int id) throws SQLException {
 		Article article = null;				
 		try(PreparedStatement ps = connection.prepareStatement(SELECT)){	
 			ps.setInt(1,id);
 			try(ResultSet resultSet =ps.executeQuery()) {
-				while(resultSet.next()) {					
-					int rsIdArticle = resultSet.getInt(1);
-					String rsDescription  = resultSet.getString(2);
-					String rsBrand = resultSet.getString(3);
-					double rsPrice = resultSet.getDouble(4);
+				resultSet.next();				
+					int rsIdArticle = resultSet.getInt("IdArticle");
+					String rsDescription  = resultSet.getString("Description");
+					String rsBrand = resultSet.getString("Brand");
+					double rsPrice = resultSet.getDouble("UnitaryPrice");
 					article = new Article(rsIdArticle, rsDescription, rsBrand, rsPrice);
-				} 		
 			}
 		}
 		catch(SQLException e) {
-			throw new RuntimeException("Erreur de lecture");
+			throw new SQLException("Erreur de lecture");
 		}
 		return article;
 	}	
 
 	@Override
-	public boolean update(Article obj) {
+	public boolean update(Article obj) throws SQLException {
 		boolean updated = false;		
 		try(PreparedStatement ps = connection.prepareStatement(UPDATE)){	
 			ps.setString(1, obj.getDescription());
@@ -73,12 +72,11 @@ public class ArticleDao implements Dao<Article>{
 		}
 
 		catch(SQLException e) {
-			throw new RuntimeException("Echec de la mise à jour");
+			throw new SQLException("Echec de la mise à jour");
 		}
 		return updated;
 	}
-	
-	 
+
 	@Override
 	public boolean delete(int id) {
 		boolean deleted =false;
@@ -95,25 +93,24 @@ public class ArticleDao implements Dao<Article>{
 	}
 
 	@Override
-	public ArrayList<Article> readAll() {
+	public ArrayList<Article> readAll() throws SQLException {
 		articles = new ArrayList<Article>();
 		try(Statement statement = connection.createStatement()){ //objet transportant la requete sql
 			try(ResultSet resultSet =statement.executeQuery(SELECT_ALL)) { //ResultSet de java.sql
 				while(resultSet.next()) {
-					int rsIdArticle = resultSet.getInt(1);
-					String rsDescription  = resultSet.getString(2);
-					String rsBrand = resultSet.getString(3);
-					double rsPrice = resultSet.getDouble(4);
+					int rsIdArticle = resultSet.getInt("IdArticle");
+					String rsDescription  = resultSet.getString("Description");
+					String rsBrand = resultSet.getString("Brand");
+					double rsPrice = resultSet.getDouble("Price");
 					articles.add((new Article(rsIdArticle, rsDescription, rsBrand, rsPrice)));
 				}
 
 			}
-			
+
 		}
 		catch(SQLException e) {
-			e.printStackTrace();
+			throw new SQLException("Erreur de lecture");
 		}
 		return articles;
 	}
-
 }

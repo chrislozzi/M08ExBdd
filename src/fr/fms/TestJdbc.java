@@ -24,12 +24,12 @@ public class TestJdbc {
 	public static void main(String[] args) throws Exception{
 		ArrayList<Article> articles = new ArrayList<Article>();
 		CreateConfigFile confProperties = new CreateConfigFile();
-		confProperties.Create();
+		confProperties.create();
 		Properties prop = CreateConfigFile.readPropertiesFile("conf.properties");
 		
 		try {
 			Class.forName(prop.getProperty("db.driver.class")); //enregistre la class auprès du driver manager
-													  //autrement dit : charge le pilote
+																//autrement dit : charge le pilote
 		}
 		catch(ClassNotFoundException e) {
 			e.printStackTrace();
@@ -72,21 +72,21 @@ public class TestJdbc {
 
 			}
 			//mis à jour du champs idCatégorie du nouvel article
-			//			articles.add(new Article(16, "S10", "Samsung", 2000));
-			//			int articleIdCategory =2;
-			//			try(Statement statement = connection.createStatement()){				
-			//				String str = "UPDATE T_Articles SET IdCategory =" + articleIdCategory + " where IdArticle =" + obj.getIdArticle() + ";";
-			//				int row = statement.executeUpdate(str);
-			//				if(row ==1) System.out.println("mise à jour effectuée");
-			//			}
-			//
-			//			//suppression d'un article
-			//			int idArticle = 1;
-			//			try(Statement statement = connection.createStatement()){				
-			//				String str = "DELETE FROM T_Articles where IdArticle =" + idArticle + ";";
-			//				int row = statement.executeUpdate(str);
-			//				if(row ==1) System.out.println("suppression effectuée");
-			//			}
+						articles.add(new Article(16, "S10", "Samsung", 2000));
+						int articleIdCategory =2;
+						try(Statement statement = connection.createStatement()){				
+							String str = "UPDATE T_Articles SET IdCategory =" + articleIdCategory + " where IdArticle =" + obj.getIdArticle() + ";";
+							int row = statement.executeUpdate(str);
+							if(row ==1) System.out.println("mise à jour effectuée");
+						}
+			
+						//suppression d'un article
+						int idArticle = 1;
+						try(Statement statement = connection.createStatement()){				
+							String str = "DELETE FROM T_Articles where IdArticle =" + idArticle + ";";
+							int row = statement.executeUpdate(str);
+							if(row ==1) System.out.println("suppression effectuée");
+						}
 
 			//affiche toutes les informations sur un article (inner join)
 			int idArticle2 = 5;

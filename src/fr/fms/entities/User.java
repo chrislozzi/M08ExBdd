@@ -3,6 +3,8 @@
  */
 package fr.fms.entities;
 
+import java.util.Objects;
+
 /**
  * @author Stagiaires09
  *
@@ -18,9 +20,9 @@ public class User {
 	 */
 	public User(int idUser, String login, String password) {
 		super();
-		this.idUser = idUser;
-		this.login = login;
-		this.password = password;
+		setIdUser(idUser);
+		setLogin(login);
+		setPassword(password);
 	}
 	/**
 	 * @param login
@@ -28,8 +30,9 @@ public class User {
 	 */
 	public User(String login, String password) {
 		super();
-		this.login = login;
-		this.password = password;
+		setLogin(login);
+		setPassword(password);
+	
 	}
 	/**
 	 * @return the idUser
@@ -66,6 +69,18 @@ public class User {
 	 */
 	public void setPassword(String password) {
 		this.password = password;
+		
+	}
+
+	public boolean isAuthorised(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		User other = (User) obj;
+		return Objects.equals(login, other.login) && Objects.equals(password, other.password);
 	}
 	@Override
 	public String toString() {

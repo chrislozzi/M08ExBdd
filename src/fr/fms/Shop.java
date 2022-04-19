@@ -3,38 +3,65 @@
  */
 package fr.fms;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import fr.fms.dao.ArticleDao;
 import fr.fms.dao.BddConnection;
 import fr.fms.dao.UserDao;
 import fr.fms.entities.Article;
 import fr.fms.entities.User;
+import fr.fms.forms.*;
 
 /**
  * @author Stagiaires09
  *
  */
 public class Shop {
-
+//	public static ArticleDao artDao = new ArticleDao();
+//	public static UserDao usrDao = new UserDao();
+//	public static Article art = null;
+//	public static User usr = null;
 	/**
 	 * @param args
 	 */
-	public static void main(String[] args) {
-		ArticleDao artDao = new ArticleDao();
-		UserDao usrDao = new UserDao();
-		Article art = null;
-		User usr = null;
+	public static void main(String[] args) throws Exception {
+//		ArticleDao artDao = new ArticleDao();
+//		UserDao usrDao = new UserDao();
+//		Article art = null;
+//		User usr = null;
+//		//exercice 6
+//		wellcome();
 		
 		
+//		Scanner scan = new Scanner(System.in);	
+//		System.out.println("Merci de bien vouloir vous identifier");
+//		System.out.println("--------------------------------------------");
+//		
+//		System.out.println("Saisissez votre login:");
+//		String login = scan.next();
+//		System.out.println("Saisissez votre mot de passe:");
+//		String password = scan.next();
+//		User visitor = new User(login, password);
+//		
+//		if(authentication(visitor)) System.out.println("Bienvenue : " + visitor.getLogin());
+//		 else System.out.println("Erreur de Login ou de mot de passe");
+					 
+		 
+		//	if(usrDao.readAll().contains(visitor)) 
+			
+			//System.out.println("Bienvenue" + visitor.getLogin());
+		
+		//***********************************************************
 		//exercice 5.2
 		//Création d'un nouvel article
 		//artDao.create(new Article("Casque OCR","Facebook", 3000.0));
 		
-//		//Lecture d'un article
+		//Lecture d'un article
 //		System.out.println(artDao.read(3));
 		
 		//Update d'un article
@@ -46,10 +73,13 @@ public class Shop {
 		
 		//Supprime un article
 //		System.out.println(artDao.delete(59));
-		System.out.println(artDao.delete(987)); //tentative de suppression d'un article inexistant
+		//tentative de suppression d'un article inexistant
+//		System.out.println(artDao.delete(987));
 
 		//Affiche tous les articles
 //		artDao.readAll().toString();
+
+		//***********************************************************
 		
 		//Exercice 6
 		//Création d'un utilisateur
@@ -63,16 +93,47 @@ public class Shop {
 //		usr = usrDao.read(5);
 //		usr.setPassword("pas2mot2pass");
 //		System.out.println(usrDao.update(usr));
-		//exercie 6 et 7 fait dans le script shop.sql
+		
+
+		
+		//gestion des doublons et exo 7 fait dans le script shop.sql
+		//***********************************************************
+				
+		
+		
 		//exercice 9
-		//Vérification de l'unicité du Singleton BddConnection
-		BddConnection  bddC1 = BddConnection.getInstance();
-		BddConnection  bddC2 = BddConnection.getInstance();
-		System.out.println(bddC1.equals(bddC2));
+		//Vérification de l'unicité du Singleton BddConnection		
 		
+//		Connection  bddC3 = BddConnection.getConnection();
+//		Connection  bddC4 = BddConnection.getConnection();
+//	
+//		System.out.println(bddC3.equals(bddC4));
+//		System.out.println(bddC3.hashCode() == bddC4.hashCode());
 		
+		try {
+			System.out.println(new ArticleDao().read(789));
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println(e.getMessage());
+		}
+		wellcome();
 	
 	}
 	
-
+	private static void wellcome() {
+		System.out.println();
+		System.out.println("********************************************");
+		System.out.println("        BIENVENU DANS MA BOUTIQUE V1        ");
+		System.out.println("********************************************");		
+		System.out.println();
+	}
+//	private static boolean authentication(User visitor) {
+//		Boolean Authorised = false;
+//		ArrayList<User> users = usrDao.readAll();
+//		for (User user : users) {
+//			if(user.isAuthorised(visitor)) Authorised=true;
+//			}
+//		return Authorised;
+//		}
+//	
 }

@@ -45,11 +45,14 @@ Password varchar(20) NOT NULL
 
 -----------------------Exercice 7   ---------------------------------------------
 -- ------------------------------------------------------------------------------
--- - Nouveaux utilisateurs en base, sans doublon grace au mot clé UNIQUE      ---
+---- Nouveaux utilisateurs en base, garantie sans doublon pour le champs Login---
+---- grâce à la contrainte (ici d'intégrité) UNIQUE, qui garantit que les valeurs
+---- de cette colonne seront uniques										-----
 -- ------------------------------------------------------------------------------
 INSERT INTO T_Users ( Login, Password ) VALUES ( 'Robert'  , '123' );
 INSERT INTO T_Users ( Login, Password ) VALUES ( 'Nasser'  , 'Wa7edJoujTelata' );
 INSERT INTO T_Users ( Login, Password ) VALUES ( 'Momar'   , 'BennNaarNett' );
 INSERT INTO T_Users ( Login, Password ) VALUES ( 'Jean-Claude'   , 'Plantedbaton' );
+INSERT INTO T_Users ( Login, Password ) VALUES ( 'Christophe'   , 'admin' );
 
 SELECT * FROM T_Users;
