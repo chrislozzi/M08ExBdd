@@ -27,7 +27,7 @@ public class ArticleDao implements Dao<Article>{
 	}
 
 	@Override
-	public void create(Article obj) throws SQLException {		
+	public void create(Article obj){		
 		try(PreparedStatement ps = connection.prepareStatement(CREATE)){	
 			ps.setString(1, obj.getDescription());
 			ps.setString(2, obj.getBrand());
@@ -36,12 +36,12 @@ public class ArticleDao implements Dao<Article>{
 
 		}
 		catch(SQLException e) {
-			throw new SQLException("Echec de création de l'article");
+			System.out.println("Echec de création de l'article");
 		}
 	}
 
 	@Override
-	public Article read(int id) throws SQLException {
+	public Article read(int id) {
 		Article article = null;				
 		try(PreparedStatement ps = connection.prepareStatement(SELECT)){	
 			ps.setInt(1,id);
@@ -55,13 +55,13 @@ public class ArticleDao implements Dao<Article>{
 			}
 		}
 		catch(SQLException e) {
-			throw new SQLException("Erreur de lecture");
+			System.out.println("Erreur de lecture");
 		}
 		return article;
 	}	
 
 	@Override
-	public boolean update(Article obj) throws SQLException {
+	public boolean update(Article obj) {
 		boolean updated = false;		
 		try(PreparedStatement ps = connection.prepareStatement(UPDATE)){	
 			ps.setString(1, obj.getDescription());
@@ -72,7 +72,7 @@ public class ArticleDao implements Dao<Article>{
 		}
 
 		catch(SQLException e) {
-			throw new SQLException("Echec de la mise à jour");
+			System.out.println("Echec de la mise à jour");
 		}
 		return updated;
 	}
@@ -93,7 +93,7 @@ public class ArticleDao implements Dao<Article>{
 	}
 
 	@Override
-	public ArrayList<Article> readAll() throws SQLException {
+	public ArrayList<Article> readAll() {
 		articles = new ArrayList<Article>();
 		try(Statement statement = connection.createStatement()){ //objet transportant la requete sql
 			try(ResultSet resultSet =statement.executeQuery(SELECT_ALL)) { //ResultSet de java.sql
@@ -101,7 +101,7 @@ public class ArticleDao implements Dao<Article>{
 					int rsIdArticle = resultSet.getInt("IdArticle");
 					String rsDescription  = resultSet.getString("Description");
 					String rsBrand = resultSet.getString("Brand");
-					double rsPrice = resultSet.getDouble("Price");
+					double rsPrice = resultSet.getDouble("UnitaryPrice");
 					articles.add((new Article(rsIdArticle, rsDescription, rsBrand, rsPrice)));
 				}
 
@@ -109,7 +109,7 @@ public class ArticleDao implements Dao<Article>{
 
 		}
 		catch(SQLException e) {
-			throw new SQLException("Erreur de lecture");
+			System.out.println("Erreur de lecture");
 		}
 		return articles;
 	}

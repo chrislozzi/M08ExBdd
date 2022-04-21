@@ -5,8 +5,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
+
+import fr.fms.business.IShopBusiness;
+import fr.fms.business.IShopBusinessImpl;
 import fr.fms.dao.ArticleDao;
 import fr.fms.dao.BddConnection;
+import fr.fms.dao.DAOFactory;
 import fr.fms.dao.UserDao;
 import fr.fms.entities.Article;
 import fr.fms.entities.User;
@@ -17,108 +22,126 @@ import fr.fms.entities.User;
 
 
 public class MyShopApp {	
-	private static User robert;
-	private static User julie;		
-//	private static Current firstAccount;
-//	private static Saving secondAccount;	
-		
-	
-	private static Pattern regExp = Pattern.compile("[0-9]+");
-	
-	public static void main(String[] args) {		
-//		initBank();	//lancement de notre banque avec 2 clients et 2 comptes		
-//		welcome();	//message de bienvenue
-//		
-		Scanner scan = new Scanner(System.in);		
-		while(true) 
-		{			//authentification
-			System.out.println("saisissez un numéro de compte bancaire valide :");
-			int numAccount = 0;
-			
-			numAccount = scanInt(scan);		//vérification si saisie conforme + compte existant ou pas
-					
-			int action = 0;
-			System.out.println("Bienvenu " + bankJob.consultAccount(numAccount).getCustomer().getName() + ", que souhaitez vous faire ? taper le numéro correspondant");
-			while(action != 6) 
-			{	
-				try {
-					System.out.println("\n1:versement - 2:retrait - 3:virement - 4:information sur ce compte - 5:liste des opérations - 6:sortir");							
-					action = scan.nextInt();
-					double amount;
-					switch(action) {							
-						case 1 : System.out.println("saisissez le montant à verser sur ce compte");
-							amount = scan.nextDouble();
-							bankJob.pay(numAccount, amount);								
-							break;
-						
-						case 2 : System.out.println("saisissez le montant à retirer sur ce compte");
-							amount = scan.nextDouble();
-							bankJob.withdraw(numAccount, amount);
-							break;
-						
-						case 3 : System.out.println("saisissez le numéro de compte destinataire");
-							int numAccountDest = scan.nextInt();
-							System.out.println("saisissez le montant à virer sur ce compte");
-							amount = scan.nextDouble();
-							bankJob.transfert(numAccount,numAccountDest, amount);
-							break;
-							
-						case 4 : System.out.println(bankJob.consultAccount(numAccount));
-							break;
-							
-						case 5 : for(Transaction trans : bankJob.listTransactions(numAccount))	System.out.println(trans);
-							break;
-							
-						case 6 : System.out.println("sortie" + "\n");
-							break;
-							
-						default : System.out.println("mauvaise saisie");							
-					}	
-				}
-				catch (Exception e) {					
-					System.out.println(e.getMessage());
-				}
-			}				
-		}
-	}
+	private static ArticleDao articleDao;
+	private static IShopBusinessImpl myShop;
+	private static ArrayList<Article> listArticle;
+	private static User customer;
+	private static Scanner scan = new Scanner(System.in);		 
+	public static void main(String[] args) throws Exception {		
+		boolean authentified =false;
+		myShop = new IShopBusinessImpl();
+		listArticle = myShop.readAll();
+		welcome();
+		System.out.println("Merci de bien vouloir vous identifier");
+		System.out.println("--------------------------------------------");
 
-	private static int scanInt(Scanner scan) {
-		int numAccount = 0;
-		
-		while(scan.hasNext()) {
-			if(scan.hasNext(regExp)) {
-				numAccount = scan.nextInt();
-				try {
-					if(bankJob.consultAccount(numAccount) != null)	break;
+		while(true) 
+		{
+			try {
+				while(!authentified)
+				{
+					System.out.println("Saisissez votre login:");
+					String login = scan.next();
+					System.out.println("Saisissez votre mot de passe:");
+					String password = scan.next();
+					customer = new User(login, password);
+
+					authentified = authentication(customer);
+					if(authentified) System.out.println("Bienvenue : " + customer.getLogin());
+					else System.out.println("Erreur de Login ou de mot de passe");	
 				}
-				catch(Exception e) {
-					System.out.println(e.getMessage());
+
+				displayArticles();
+				int action = 0;
+				while(action != 6) 
+				{	
+
+					System.out.println("\n1:Afficher les articles - 2:Mettre un article dans le panier - 3:Afficher le panier"
+									 + " - 4:Retirer un article du panier - 5:Passer la commande - 6:sortir");							
+					action = scan.nextInt();
+					int idArticle;
+					
+					switch(action) {							
+					case 1 : displayArticles();													
+					break;
+
+					case 2 : System.out.println("saisissez l'identifiant de l'article");
+					idArticle = scan.nextInt();
+					Article article = listArticle.get(idArticle-1);
+					myShop.addToCart(article);
+					displayCart();
+					break;
+
+					case 3 : displayCart();
+					break;
+
+					case 4 : System.out.println("saisissez l'identifiant de l'article à retirer du panier");
+					idArticle = scan.nextInt();
+					Article article1 = listArticle.get(idArticle-1);
+					myShop.removeFromCart(article1);
+					displayCart();
+					break;
+
+					case 5 :;
+					break;
+
+					case 6 : System.out.println("sortie" + "\n");
+					break;
+
+					default : System.out.println("mauvaise saisie");							
+					}
 				}
-			}
-			else {
-				System.out.println("un numéro de compte bancaire est constitué que de chiffres");
-				scan.next();
-			}
-		}		
-		return numAccount;
+			
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			System.out.println(e.getMessage());;
+		}
+		}
 	}
 
 	private static void welcome() {
 		System.out.println();
 		System.out.println("********************************************");
-		System.out.println("BIENVENU DANS MA BOUTIQUE V1                ");
+		System.out.println("       BIENVENU DANS MA BOUTIQUE V1         ");
 		System.out.println("********************************************");		
 		System.out.println();
 	}
 
 	private static void initBank() {			
-		robert = new User("robert", "!ù:*/àçè5");
-		julie = new User(2, "julie", "çèç'35_543");		
-//		firstAccount = new Current(100200300, new Date(), 1500, 200 , robert);
-//		secondAccount = new Saving(200300400, new Date(), 2000, 5.5, julie);	
-		bankJob = new IBankBusinessImpl();		
+	}
+	//vérifie l'existence de l'utilisateur en base
+	private static boolean authentication(User customer) throws Exception {
+		Boolean Authorised = false;
+		ArrayList<User> users =  DAOFactory.getUserDAO().readAll();
+		for (User user : users) {
+			if(user.isAuthorised(customer)) Authorised=true;
+		}
+		return Authorised;
+	}
+	//Affiche tous les articles
+	private static void displayArticles() {
+		System.out.format("%-4s%-30s%-30s%-10s \n","+----", "+------------------------------", "+------------------------------+", "----------+");
+		System.out.format("|%-4s|%-30s|%-30s|%-10s|\n","Id", "Description", "Marque", "Prix");
+		System.out.format("%-4s%-30s%-30s%-10s \n","+----", "+------------------------------", "+------------------------------+", "----------+");
+
+		listArticle.forEach(article -> {			
+			System.out.format("|%-4d|%-30s|%-30s|%-10.2f|\n",article.getIdArticle(),article.getDescription(),article.getBrand(),article.getUnitaryPrice())
+			;});
+
+		System.out.format("%-4s%-30s%-30s%-10s \n","+----", "+------------------------------", "+------------------------------+", "----------+");
+	}
+	private static void displayCart() {
+		ArrayList<Article> listCart = myShop.consultCart();
+		System.out.format("%-4s%-30s%-30s%-10s%-8s \n","+----", "+------------------------------", "+------------------------------+", "----------+","--------+");
+		System.out.format("|%-4s|%-30s|%-30s|%-10s|%-8s|\n","Id", "Description", "Marque", "Prix", "Quantité");
+		System.out.format("%-4s%-30s%-30s%-10s%-8s \n","+----", "+------------------------------", "+------------------------------+", "----------+","--------+");
+
+		listCart.forEach(article -> {			
+			System.out.format("|%-4d|%-30s|%-30s|%-10.2f|%-8d|\n",article.getIdArticle(),article.getDescription(),article.getBrand(),article.getUnitaryPrice(), article.getQuantity())
+			;});
+
+		System.out.format("%-4s%-30s%-30s%-10s%-8s \n","+----", "+------------------------------", "+------------------------------+", "----------+","--------+");
 		
-		System.out.println("Liste des comptes dans ma banque");		
-		bankJob.listAccounts().stream().forEach(c -> System.out.println(c));
 	}
 }

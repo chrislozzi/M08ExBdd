@@ -10,8 +10,8 @@ import java.util.Properties;
 public class CreateConfigFile{ //Valeur par défaut du fichier config.properties
 	private static final  String defaultDriverClass = "org.mariadb.jdbc.Driver";
 	private	static final String defaultUrl = "jdbc:mariadb://localhost:3306/Shop";
-	private	static final String defaultLogin = "root";
-	private	static final String defaultPassword = "fms2022";
+	private	static final String defaultLogin = "christophe";
+	private	static final String defaultPassword = "admin";
 	private String driverClass;
 	private String url;
 	private String login;

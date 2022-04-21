@@ -9,6 +9,7 @@ public class Article {
 	private String description = null;
 	private String brand = null;
 	private double unitaryPrice = 0.0;
+	private int quantity = 1;
 	/**
 	 * @param idArticle
 	 * @param desription
@@ -79,6 +80,19 @@ public class Article {
 	 */
 	public void setUnitaryPrice(double unitaryPrice) {
 		this.unitaryPrice = unitaryPrice;
+		
+	}
+	/**
+	 * @return the quantity
+	 */
+	public int getQuantity() {
+		return quantity;
+	}
+	/**
+	 * @param quantity the quantity to set
+	 */
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
 	}
 	@Override
 	public String toString() {

@@ -21,14 +21,14 @@ public class UserDao implements Dao<User>{
 	private static final String DELETE = "DELETE FROM T_Users WHERE IdUser=?";
 	private static final String SELECT_ALL = "SELECT * FROM T_Users;";
 	private static  ArrayList<User> users;
-	private BddConnection bddConection;
+	//private BddConnection bddConection;
 	
 	public UserDao(){
 		}
 
 
 	@Override
-	public void create(User obj) throws SQLException {		
+	public void create(User obj)  {		
 		try(PreparedStatement ps = connection.prepareStatement(CREATE)){	
 			ps.setString(1, obj.getLogin());
 			ps.setString(2, obj.getPassword());				
@@ -36,12 +36,13 @@ public class UserDao implements Dao<User>{
 
 		}
 		catch(SQLException e) {
-			throw new SQLException("Echec de la création de l'article");
+			
+			System.out.println("Echec de la création de l'article");
 		}
 	}
 
 	@Override
-	public User read(int id) throws SQLException {
+	public User read(int id)  {
 		User User = null;				
 		try(PreparedStatement ps = connection.prepareStatement(SELECT)){	
 			ps.setInt(1,id);
@@ -55,13 +56,13 @@ public class UserDao implements Dao<User>{
 			}
 		}
 		catch(SQLException e) {
-			throw new SQLException("Erreur de lecture");
+			System.out.println("Erreur de lecture");
 		}
 		return User;
 	}	
 
 	@Override
-	public boolean update(User obj) throws SQLException {
+	public boolean update(User obj) {
 		boolean updated = false;		
 		try(PreparedStatement ps = connection.prepareStatement(UPDATE)){	
 			ps.setString(1, obj.getLogin());
@@ -71,13 +72,13 @@ public class UserDao implements Dao<User>{
 		}
 
 		catch(SQLException e) {
-			throw new SQLException("Echec de la mise à jour");
+			System.out.println("Echec de la mise à jour");
 		}
 		return updated;
 	}
 
 	@Override
-	public boolean delete(int id) throws SQLException {
+	public boolean delete(int id) {
 		boolean deleted =false;
 		try(PreparedStatement ps = connection.prepareStatement(DELETE)){	
 			ps.setInt(1,id);
@@ -86,13 +87,13 @@ public class UserDao implements Dao<User>{
 		}
 
 		catch(SQLException e) {
-			throw new SQLException("Echec de la suppression de l'User");
+			System.out.println("Echec de la suppression du User");
 		}
 		return deleted;
 	}
 
 	@Override
-	public ArrayList<User> readAll() throws SQLException {
+	public ArrayList<User> readAll() {
 		users = new ArrayList<User>();
 		try(Statement statement = connection.createStatement()){ //objet transportant la requete sql
 			try(ResultSet resultSet =statement.executeQuery(SELECT_ALL)) { //ResultSet de java.sql
@@ -107,7 +108,7 @@ public class UserDao implements Dao<User>{
 
 		}
 		catch(SQLException e) {
-			throw new SQLException("Erreur de lecture");
+			System.out.println("Erreur de lecture");
 		}
 		return users;
 	}

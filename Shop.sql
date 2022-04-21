@@ -14,7 +14,8 @@ CREATE TABLE T_Articles (
 	IdArticle			int(4)		PRIMARY KEY AUTO_INCREMENT,
 	Description			varchar(30)	NOT NULL,
 	Brand				varchar(30)	NOT NULL,
-	UnitaryPrice		float(8)	NOT NULL DEFAULT 0
+	UnitaryPrice		float(8)	NOT NULL DEFAULT 0,
+	CartQuantity		int(4)
 ) ENGINE = InnoDB;
 
 INSERT INTO T_Articles ( Description, Brand, UnitaryPrice ) VALUES ( 'Souris'     ,	'Logitoch', 65 );
