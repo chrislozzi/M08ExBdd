@@ -8,9 +8,9 @@ package fr.fms.entities;
  *
  */
 public class Category {
-	private int IdCategory =0;
-	private String CatName ="";
-	private String Description="";
+	private int idCategory;
+	private String catName;
+	private String description;
 	
 	
 	/**
@@ -19,7 +19,6 @@ public class Category {
 	 * @param description
 	 */
 	public Category(int idCategory, String catName, String description) {
-		super();
 		setIdCategory(idCategory);
 		setCatName(catName);
 		setDescription(description);
@@ -32,56 +31,67 @@ public class Category {
 	 * @param description
 	 */
 	public Category(String catName, String description) {
-		super();
 		setCatName(catName);
 		setDescription(description);
 	}
-
 
 
 	/**
 	 * @return the idCategory
 	 */
 	public int getIdCategory() {
-		return IdCategory;
+		return idCategory;
 	}
+
+
 	/**
 	 * @param idCategory the idCategory to set
 	 */
 	public void setIdCategory(int idCategory) {
-		IdCategory = idCategory;
+		this.idCategory = idCategory;
 	}
+
+
 	/**
 	 * @return the catName
 	 */
 	public String getCatName() {
-		return CatName;
+		return catName;
 	}
+
+
 	/**
 	 * @param catName the catName to set
 	 */
 	public void setCatName(String catName) {
-		CatName = catName;
+		this.catName = catName;
 	}
+
+
 	/**
 	 * @return the description
 	 */
 	public String getDescription() {
-		return Description;
+		return description;
 	}
+
+
 	/**
 	 * @param description the description to set
 	 */
 	public void setDescription(String description) {
-		Description = description;
+		this.description = description;
 	}
-
 
 
 	@Override
 	public String toString() {
-		return "Category [IdCategory=" + IdCategory + ", CatName=" + CatName + ", Description=" + Description + "]";
+		return "Category [idCategory=" + idCategory + ", catName=" + catName + ", description=" + description + "]";
 	}
+
+
+
+
 	
 	
 	

@@ -57,15 +57,15 @@ select Brand, avg(UnitaryPrice) from t_articles group by Brand HAVING avg(Unitar
 CREATE TABLE t_Categories (IdCategory INT(4) PRIMARY KEY AUTO_INCREMENT,CatName VARCHAR(30) NOT NULL, Desciption VARCHAR(100) NOT NULL);
 ALTER TABLE t_articles ADD COLUMN IdCategory INT(4);
 ALTER TABLE t_articles ADD FOREIGN KEY(IdCategory) REFERENCES t_Categories(IdCategory);
-INSERT INTO t_Categories ( CatName, Desciption ) VALUES ( 'PC','ordinateur portable ou pas' );
-INSERT INTO t_Categories ( CatName, Desciption ) VALUES ( 'Smartphone','téléphone du future ecran holographique + stargate' );
-INSERT INTO t_Categories ( CatName, Desciption ) VALUES ( 'Materiel info','Tout materiel informatique physique en lien avec un ordinateur');
-INSERT INTO t_Categories ( CatName, Desciption ) VALUES ( 'Logiciel','Logiciel ou tout autre programme interne d un ordinateur');
+INSERT INTO t_Categories ( CatName, Description ) VALUES ( 'PC','ordinateur portable ou pas' );
+INSERT INTO t_Categories ( CatName, Description ) VALUES ( 'Smartphone','téléphone du future ecran holographique + stargate' );
+INSERT INTO t_Categories ( CatName, Description ) VALUES ( 'Materiel info','Tout materiel informatique physique en lien avec un ordinateur');
+INSERT INTO t_Categories ( CatName, Description ) VALUES ( 'Logiciel','Logiciel ou tout autre programme interne d un ordinateur');
 -----------------------Question 1.13----------------------------------------------
 -----Renseignement du champs catégory de chaque article(en fonction des insert Q1.4
 ----- Puis trouver LA requéte qui affiche les lignes: clés>10 sort by UnitaryPrice                
 ----------------------------------------------------------------------------------
-----FIELD() retourne la position du premier argument dans la liste des arguments suivants																------
+----FIELD() retourne la position du premier argument dans la liste des arguments suivants													
 ----ELT() retourne une chaîne passée en argument à partir d’un index spécifié-----
 ----------------------------------------------------------------------------------
 UPDATE t_articles SET IdCategory = ELT(FIELD(IdArticle,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16),3,3,4,3,3,1,3,3,3,3,3,3,3,3,1,2) WHERE IdArticle IN(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16);

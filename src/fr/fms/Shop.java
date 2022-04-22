@@ -15,7 +15,7 @@ import fr.fms.dao.BddConnection;
 import fr.fms.dao.UserDao;
 import fr.fms.entities.Article;
 import fr.fms.entities.User;
-import fr.fms.forms.*;
+
 
 /**
  * @author Stagiaires09
@@ -38,34 +38,35 @@ public class Shop {
 		wellcome();
 
 
-		Scanner scan = new Scanner(System.in);	
-		System.out.println("Merci de bien vouloir vous identifier");
-		System.out.println("--------------------------------------------");
+//		Scanner scan = new Scanner(System.in);	
+//		System.out.println("Merci de bien vouloir vous identifier");
+//		System.out.println("--------------------------------------------");
 
-		System.out.println("Saisissez votre login:");
-		String login = scan.next();
-		System.out.println("Saisissez votre mot de passe:");
-		String password = scan.next();
-		User visitor = new User(login, password);
-		try {	
-			if(authentication(visitor)) System.out.println("Bienvenue : " + visitor.getLogin());
-			else System.out.println("Erreur de Login ou de mot de passe");
-
-
-			if(new UserDao().readAll().contains(visitor)) 
-
-				System.out.println("Bienvenue" + visitor.getLogin());
-			new ArticleDao().readAll().toString();
-		}catch (SQLException e) {
-			System.out.println(e.getMessage());
-		}
+//		System.out.println("Saisissez votre login:");
+//		String login = scan.next();
+//		System.out.println("Saisissez votre mot de passe:");
+//		String password = scan.next();
+//		User visitor = new User(login, password);
+//		try {	
+//			if(authentication(visitor)) System.out.println("Bienvenue : " + visitor.getLogin());
+//			else System.out.println("Erreur de Login ou de mot de passe");
+//
+//
+//			if(new UserDao().readAll().contains(visitor)) 
+//
+//				System.out.println("Bienvenue" + visitor.getLogin());
+//			new ArticleDao().readAll().toString();
+//		}catch (SQLException e) {
+//			System.out.println(e.getMessage());
+//		}
 		//***********************************************************
 		//exercice 5.2
 		//Création d'un nouvel article
 		//artDao.create(new Article("Casque OCR","Facebook", 3000.0));
 
 		//Lecture d'un article
-		//		System.out.println(artDao.read(3));
+				System.out.println(artDao.read(3));
+		
 
 		//Update d'un article
 		//		art =  artDao.read(3);
@@ -75,7 +76,9 @@ public class Shop {
 
 
 		//Supprime un article
-		//		System.out.println(artDao.delete(59));
+//				System.out.println(artDao.delete(17));
+			
+			
 		//tentative de suppression d'un article inexistant
 		//		System.out.println(artDao.delete(987));
 

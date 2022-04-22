@@ -8,10 +8,14 @@ package fr.fms.dao;
  *
  */
 public class DAOFactory {
-	public static UserDao getUserDAO() {
+		
+	public static UserDao getUserDao() {
 		return new UserDao();
 	}
-	public static ArticleDao getArticleDAO() {
-		return new ArticleDao();
+	public static ArticleDao getArticleDao() {
+		return  new ArticleDao();
+	}
+	public static CategoryDao getCategoryDao() {
+		return new CategoryDao();
 	}
 }

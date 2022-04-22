@@ -43,7 +43,7 @@ public class UserDao implements Dao<User>{
 
 	@Override
 	public User read(int id)  {
-		User User = null;				
+		User user = null;				
 		try(PreparedStatement ps = connection.prepareStatement(SELECT)){	
 			ps.setInt(1,id);
 			try(ResultSet resultSet =ps.executeQuery()) {
@@ -51,14 +51,14 @@ public class UserDao implements Dao<User>{
 					int rsIdUser = resultSet.getInt("IdUser");
 					String rsLogin  = resultSet.getString("Login");
 					String rsPassword = resultSet.getString("Password");
-					User = new User(rsIdUser, rsLogin, rsPassword);
+					user = new User(rsIdUser, rsLogin, rsPassword);
 				} 		
 			}
 		}
 		catch(SQLException e) {
 			System.out.println("Erreur de lecture");
 		}
-		return User;
+		return user;
 	}	
 
 	@Override

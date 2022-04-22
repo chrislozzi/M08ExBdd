@@ -10,7 +10,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import fr.fms.entities.Category;
-import fr.fms.entities.Category;
 
 /**
  * @author Stagiaires09
@@ -22,7 +21,7 @@ public class CategoryDao implements Dao<Category>{
 	private static final String UPDATE = "UPDATE T_Categories SET CatName = ?, Description = ? WHERE IdCategory = ?;";
 	private static final String DELETE = "DELETE FROM T_Categories WHERE IdCategory=?";
 	private static final String SELECT_ALL = "SELECT * FROM T_Categories;";
-	private static  ArrayList<Category> categories;
+
 
 	public CategoryDao(){
 	}
@@ -32,7 +31,7 @@ public class CategoryDao implements Dao<Category>{
 		try(PreparedStatement ps = connection.prepareStatement(CREATE)){	
 			ps.setString(1, obj.getCatName());	
 			ps.setString(2, obj.getDescription());
-			if(ps.executeUpdate() !=1) throw new RuntimeException("Echec: auncune création de catégorie effectuée");
+			//if(ps.executeUpdate() !=1) throw new RuntimeException("Echec: auncune création de catégorie effectuée");
 
 		}
 		catch(SQLException e) {
@@ -42,15 +41,18 @@ public class CategoryDao implements Dao<Category>{
 
 	@Override
 	public Category read(int id) {
-		Category category = null;				
+		Category category = new Category(0,"","") ;				
 		try(PreparedStatement ps = connection.prepareStatement(SELECT)){	
 			ps.setInt(1,id);
 			try(ResultSet resultSet =ps.executeQuery()) {
-				resultSet.next();				
-					int rsIdCategory = resultSet.getInt("IdCategory");
+				if(resultSet.next()) {				
+					int rsIdCategory = resultSet.getInt("IdCategory");	
 					String rsCatName = resultSet.getString("CatName");
-					String rsDescription  = resultSet.getString("Description");
-					category = new Category(rsIdCategory, rsCatName, rsDescription);
+					String rsDescription  = resultSet.getString("Description");		
+					category.setIdCategory(rsIdCategory);
+					category.setCatName(rsCatName);
+					category.setDescription(rsDescription);
+				}
 			}
 		}
 		catch(SQLException e) {
@@ -91,7 +93,7 @@ public class CategoryDao implements Dao<Category>{
 
 	@Override
 	public ArrayList<Category> readAll() {
-		categories = new ArrayList<Category>();
+	ArrayList<Category>	categories = new ArrayList<Category>();
 		try(Statement statement = connection.createStatement()){ //objet transportant la requete sql
 			try(ResultSet resultSet =statement.executeQuery(SELECT_ALL)) { //ResultSet de java.sql
 				while(resultSet.next()) {
@@ -99,7 +101,7 @@ public class CategoryDao implements Dao<Category>{
 					String rsCatName = resultSet.getString("CatName");
 					String rsDescription  = resultSet.getString("Description");
 					
-					categories.add((new Category(rsIdCategory, rsCatName ,rsDescription)));
+					categories.add(new Category(rsIdCategory, rsCatName ,rsDescription));
 				}
 
 			}

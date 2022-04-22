@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Properties;
 
+import fr.fms.dao.CategoryDao;
 import fr.fms.dao.CreateConfigFile;
 import fr.fms.entities.Article;
 
@@ -26,6 +27,10 @@ public class TestJdbc {
 		CreateConfigFile confProperties = new CreateConfigFile();
 		confProperties.create();
 		Properties prop = CreateConfigFile.readPropertiesFile("conf.properties");
+		CategoryDao cDao = new CategoryDao();
+		
+		//System.out.println(cDao.readAll().toString());
+		System.out.println(cDao.read(1));
 		
 		try {
 			Class.forName(prop.getProperty("db.driver.class")); //enregistre la class auprès du driver manager

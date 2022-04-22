@@ -15,13 +15,15 @@ import java.util.Properties;
  */
 public class BddConnection {
 	private static final CreateConfigFile confProperties = new CreateConfigFile();
-	private static final BddConnection INSTANCE = new BddConnection(confProperties);	
-	private   Connection connection = null;
+	private static final BddConnection INSTANCE = new BddConnection(confProperties);
 	
+	private   Connection connection = null;
+	 
 	private  BddConnection(CreateConfigFile confProperties) {	
 		Properties readPropFile = null;
 		try {
-							
+			confProperties.create();		
+				
 			readPropFile = CreateConfigFile.readPropertiesFile("conf.properties");		
 			Class.forName(readPropFile.getProperty("db.driver.class")); 
 			connection = DriverManager.getConnection(readPropFile.getProperty("db.url"),

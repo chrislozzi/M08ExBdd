@@ -21,6 +21,8 @@ public class ArticleDao implements Dao<Article>{
 	private static final String UPDATE = "UPDATE T_Articles SET description = ?, brand = ?, unitaryPrice =? WHERE IdArticle = ?;";
 	private static final String DELETE = "DELETE FROM T_Articles WHERE IdArticle=?";
 	private static final String SELECT_ALL = "SELECT * FROM T_Articles;";
+	private static final String SELECT_BY_CATEGORY = "SELECT * FROM T_Articles WHERE IdCategory= ?;";
+	
 	private static  ArrayList<Article> articles;
 
 	public ArticleDao(){
@@ -112,5 +114,28 @@ public class ArticleDao implements Dao<Article>{
 			System.out.println("Erreur de lecture");
 		}
 		return articles;
+	}
+	public ArrayList<Article> findByCategory(int idCat) {
+		articles = new ArrayList<Article>();
+		try(PreparedStatement ps  = connection.prepareStatement(SELECT_BY_CATEGORY)){ //objet transportant la requete sql
+			ps.setInt(1,idCat);
+			try(ResultSet resultSet =ps.executeQuery()) { //ResultSet de java.sql
+				while(resultSet.next()) {
+					int rsIdArticle = resultSet.getInt("IdArticle");
+					String rsDescription  = resultSet.getString("Description");
+					String rsBrand = resultSet.getString("Brand");
+					double rsPrice = resultSet.getDouble("UnitaryPrice");
+					articles.add((new Article(rsIdArticle, rsDescription, rsBrand, rsPrice)));
+				}
+
+			}
+
+		}
+		catch(SQLException e) {
+			//System.out.println("Erreur de lecture");
+			e.printStackTrace();
+		}
+		return articles;
+		
 	}
 }
